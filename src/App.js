@@ -1,23 +1,38 @@
-import logo from './logo.svg';
+import { useEffect, useState } from 'react';
 import './App.css';
+import Book from './components/Book';
+
 
 function App() {
+
+  const [books, setBooks] = useState([])
+
+  useEffect(() => {
+    fetch('http://localhost:8000/api/books/')
+    .then(response => response.json())
+    .then(dados => {
+      setBooks(dados)
+    })
+  })
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className='banner-container'>
+        <img src='/images/library-logo.png' alt='Banner da livraria' />
+      </div>
+      <h1>Library</h1>
+      <section className='book-section'>
+        {books.map(books => 
+          <Book 
+            key={books.id} 
+            image={books.image} 
+            title={books.title} 
+            author={books.author} 
+            price={books.price} 
+            gender={books.gender} 
+            isbn={books.isbn} />
+        )}
+      </section>
     </div>
   );
 }
